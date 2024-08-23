@@ -5,7 +5,7 @@
 % based on the original LaTeX ARTICLE DOCUMENT STYLE
 % Copyright (C) 1988, 1989 by Leslie Lamport
 %
-% Copyright (c) 2013 SAGE Publications. All rights reserved.
+% Copyright (c) 2020 SAGE Publications. All rights reserved.
 %
 %Rules of Use
 %
@@ -13,7 +13,7 @@
 %
 %
 %This class file is made available for use by authors who wish to prepare an
-%article for publication in a SAGE Publications journal. 
+%article for publication in Transportation Research Record.
 %The user may not exploit any part of the class file commercially.
 %
 %This class file is provided on an `as is'  basis, without warranties of any
@@ -25,22 +25,19 @@
 %these rules of use.
 %---------------------------------------------------------------------------
 %
-% Created by Alistair Smith, Sunrise Setting Ltd, 27 July 2013
+% Created by Alistair Smith, Sunrise Setting Ltd, 31 August 2020
 %
-% sagej.cls --- For SAGE Publications
+% TRR.cls --- For Transportation Research Record (SAGE Publications)
 %
-%  9/6/15 Endnote bug fix.
-% 24/6/15 Add "comma" to vancouver natbib line; remove figure extension; Review option added.
-% 14/1/17 SAGE graphic removed and replaced by drawn box.
 
-\def\update{2017/01/17 v1.20}
+\def\update{2020/08/31 v1.00}
 
-\newcommand{\journalclass}{sagej.cls}
-\newcommand{\journalclassshort}{sagej}
+\newcommand{\journalclass}{TRR.cls}
+\newcommand{\journalclassshort}{TRR}
 %\newcommand{\DOI}{XXX}
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{sagej}[\update\ \journalclass]
+\ProvidesClass{TRR}[\update\ \journalclass]
 
 %\newcommand\hmmax{0}
 
@@ -51,6 +48,10 @@
 \newif\if@doublespace
 \DeclareOption{doublespace}{%
 \@doublespacetrue}
+
+\newif\if@TRRV
+\DeclareOption{TRRV}{%
+\@TRRVtrue}
 
 \newif\if@sageh
 \DeclareOption{sageh}{%
@@ -65,6 +66,10 @@
 \@sageapatrue}
 
 %Setup the trim and text areas
+\newif\if@TRR
+\DeclareOption{TRR}{%
+\@TRRtrue}
+
 \newif\if@shortAfour
 \DeclareOption{shortAfour}{%
 \@shortAfourtrue}
@@ -111,9 +116,21 @@
 %\RequirePackage{bm}
 \RequirePackage[errorshow]{tracefnt}
 
+\@TRRVtrue
+\@TRRtrue
 \@twosidetrue
 \flushbottom
 \frenchspacing
+
+%papersize={width,height}
+\if@TRR
+\usepackage[text={177.5mm,230.5mm},%
+papersize={216mm,280mm},%
+columnsep=6.5mm,%
+headsep=21pt,%
+centering]{geometry}
+\usepackage{ftnright}
+\fi
 
 \let\sagesf\sf
 \if@PCfour
@@ -322,14 +339,15 @@ centering]{geometry}
     \vskip 12.5mm%
     \end{minipage}\hspace{15mm}\begin{minipage}[t]{42.625mm}
 \hbox{}\scriptsize\journalname\\
-\hbox{}\volumenumber(\issuenumber):\startpage--\endpage\\ 
-\hbox{}\copyright The Author(s) \volumeyear\\
-\hbox{}Reprints and permission:\\
-\hbox{}sagepub.co.uk/journalsPermissions.nav\\
+\hbox{}\volumeyear, Vol.\ \volumenumber(\issuenumber) \startpage--\endpage\\
+\hbox{}\copyright National Academy of Sciences:\\
+Transportation Research Board \volumeyear\\
+\hbox{}Article reuse guidelines:\\
+\hbox{}sagepub.com/journals-permissions\\
 \hbox{}DOI: 10.1177/ToBeAssigned\\
-\hbox{}www.sagepub.com/\\[2.3pt]
-%\hbox{}\includegraphics[height=4mm]{SAGE_Logo}
-\hbox{}{\fboxsep 1.5pt\framebox[14mm]{{\normalsize SAGE}}}
+\hbox{}journals.sagepub.com/home/trr\\[2.3pt]
+\hbox{}\includegraphics[height=4mm]{SAGE_Logo}
+%\hbox{}{\fboxsep 1.5pt\framebox[14mm]{{\normalsize SAGE}}}
 \end{minipage}
 {\par\large%
 \if@Royal
@@ -361,13 +379,13 @@ centering]{geometry}
       \vspace{22pt}
         \par%
   }
- 
+
 \def\startpage{\pageref{FirstPage}}
 \def\endpage{\pageref{LastPage}}
 \def\volumeyear{0000}
 \def\volumenumber{XX}
 \def\issuenumber{X}
-\def\journalname{Journal Title}
+\def\journalname{Transportation Research Record}
 
 \def\runninghead#1{\markboth{{#1}}{}}
 
@@ -396,7 +414,7 @@ centering]{geometry}
 %\renewcommand{\@seccntformat}[1]{{\csname the#1\endcsname.}\hspace{0.5em}}
 \setcounter{secnumdepth}{-2}
 
-\newdimen\@bls                              
+\newdimen\@bls
 \@bls=\baselineskip
 
 \renewcommand\section{\@startsection {section}{1}{\z@}%
@@ -452,31 +470,39 @@ centering]{geometry}
 \def\thmhead@plain#1#2#3{%
   \thmname{#1}\thmnumber{\@ifnotempty{#1}{ }{#2}}%
   \thmnote{ {\the\thm@notefont #3. }}}
-  
+
+\newenvironment{an}[1]%
+{\subsection*{\normalsize\sagesf\bfseries Authors' Note}\begin{refsize}\noindent #1}%
+{\end{refsize}}
+
 \newenvironment{acks}[1]%
 {\subsection*{\normalsize\sagesf\bfseries Acknowledgements}\begin{refsize}\noindent #1}%
+{\end{refsize}}
+
+\newenvironment{ac}[1]%
+{\subsection*{\normalsize\sagesf\bfseries Author Contributions}\begin{refsize}\noindent #1}%
+{\end{refsize}}
+
+\newenvironment{dci}[1]%
+{\subsection*{\normalsize\sagesf\bfseries Declaration of conflicting interests}\begin{refsize}\noindent #1}%
 {\end{refsize}}
 
 \newenvironment{funding}[1]%
 {\subsection*{\normalsize\sagesf\bfseries Funding}\begin{refsize}\noindent #1}%
 {\end{refsize}}
 
-\newenvironment{sm}[1]%
-{\subsection*{\normalsize\sagesf\bfseries Supplemental material}\begin{refsize}\noindent #1}%
-{\end{refsize}}
- 
-\newenvironment{dci}[1]%
-{\subsection*{\normalsize\sagesf\bfseries Declaration of conflicting interests}\begin{refsize}\noindent #1}%
-{\end{refsize}} 
-
-\newenvironment{biog}[1]%
-{\subsection*{\normalsize\sagesf\bfseries Author biography}\begin{refsize}\noindent #1}%
+\newenvironment{das}[1]%
+{\subsection*{\normalsize\sagesf\bfseries  Data Accessibility Statement}\begin{refsize}\noindent #1}%
 {\end{refsize}}
 
-\newenvironment{biogs}[1]%
-{\subsection*{\normalsize\sagesf\bfseries Author Biographies}\begin{refsize}\noindent #1}%
-{\end{refsize}}
-  
+%\newenvironment{biog}[1]%
+%{\subsection*{\normalsize\sagesf\bfseries Author biography}\begin{refsize}\noindent #1}%
+%{\end{refsize}}
+%
+%\newenvironment{biogs}[1]%
+%{\subsection*{\normalsize\sagesf\bfseries Author Biographies}\begin{refsize}\noindent #1}%
+%{\end{refsize}}
+
 %Endnotes
 \def\enotesize{\refsize}
 
@@ -489,8 +515,8 @@ centering]{geometry}
    \rightskip\z@ \leftskip15pt \parindent=0pt
    \leavevmode{\makebox[0cm][r]{%
    \hbox to15pt{\@theenmark.\hfill}}}}
- 
-  
+
+
 \newtheoremstyle{sage}
 {6pt plus 2pt minus 2pt}% space above
 {6pt plus 2pt minus 2pt}% space below
@@ -544,6 +570,19 @@ centering]{geometry}
 \renewcommand\refname{{\normalsize References}}
 \fi
 
+\if@TRRV
+\usepackage[numbers,sort&compress,comma,round]{natbib}
+\renewcommand\NAT@citenum%
+    [3]{\ifNAT@swa\NAT@@open\if*#2*\else#2\NAT@spacechar\fi
+        {\it #1\kern.09em}\if*#3*\else\NAT@cmt#3\fi\NAT@@close\else#1\fi\endgroup}
+%\bibpunct{(}{)}{;}{}{}{,}
+\renewcommand{\bibnumfmt}[1]{#1.}
+\setlength{\bibsep}{0pt}
+%\setlength{\bibhang}{20pt}
+\renewcommand{\bibfont}{\refsize}
+\renewcommand\refname{{\normalsize References}}
+\fi
+
 \if@sageapa
 %\usepackage{apalike}
 \usepackage{mslapa}
@@ -563,6 +602,10 @@ centering]{geometry}
 \label{LastPage}}
 
 \pagestyle{sagepage}
+
+\if@TRR
+\twocolumn
+\fi
 
 \if@shortAfour
 \twocolumn
